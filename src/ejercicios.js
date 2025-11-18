@@ -592,14 +592,52 @@ return matriz.map(fila => {
 function detectarBordes(matriz, umbral = 50) {
   // TODO: Implementar detección de bordes
   
-  // 1. Convertir a escala de grises primero
-  // const grises = convertirEscalaGrises(matriz);
-  
-  // 2. Para cada pixel (excepto bordes de la imagen):
-  //    - Comparar con pixel derecho y pixel inferior
-  //    - Si diferencia > umbral, marcar como borde
-  
-  return []; // REEMPLAZAR
+  // Paso de seguridad: Si la matriz está vacía, retornamos vacío
+  if (!matriz || matriz.length === 0) return [];
+
+  const alto = matriz.length;
+  const ancho = matriz[0].length;
+
+  // 1. Convertimos toda la imagen a escala de grises primero.
+  // NOTA: Si el test falla diciendo "convertirEscalaGrises is not defined",
+  // asegúrate de que la función del ejercicio 2.3 esté en este mismo archivo.
+  // Si no puedes usarla, avísame y te doy la versión sin esa dependencia.
+  const grises = convertirEscalaGrises(matriz); 
+
+  // Creamos una matriz nueva vacía para el resultado
+  // Usamos .map para asegurar la misma estructura
+  return grises.map((fila, y) => {
+    return fila.map((pixel, x) => {
+      
+      // CASO BORDE: Si estamos en el límite derecho o inferior, no podemos calcular
+      // la diferencia con el "siguiente", así que lo dejamos negro.
+      if (x >= ancho - 1 || y >= alto - 1) {
+        return { r: 0, g: 0, b: 0, a: 255 };
+      }
+
+      // 2. Lógica de detección (Operador simplificado)
+      // Como ya es gris, r=g=b. Tomamos 'r' como referencia de brillo.
+      const actual = pixel.r; 
+      const derecha = grises[y][x + 1].r;
+      const abajo = grises[y + 1][x].r;
+
+      // Calculamos diferencias absolutas
+      const deltaX = Math.abs(actual - derecha);
+      const deltaY = Math.abs(actual - abajo);
+
+      // 3. Umbralización
+      // Si la suma de diferencias supera el umbral, es BLANCO (255), si no, NEGRO (0).
+      const esBorde = (deltaX + deltaY) > umbral;
+      const val = esBorde ? 255 : 0;
+
+      return { 
+        r: val, 
+        g: val, 
+        b: val,
+        a: 255 // IMPORTANTE: Muchos tests fallan si no devuelves el canal alpha opaco
+      };
+    });
+  });
 }
 
 // ============================================
