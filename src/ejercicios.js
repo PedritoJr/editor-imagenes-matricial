@@ -495,21 +495,34 @@ function rotar90Grados(matriz) {
  */
 function mezclarImagenes(matriz1, matriz2, factor) {
   // TODO: Implementar mezcla de imágenes
-  
-  // 1. Verificar que tengan las mismas dimensiones
-  // const dims1 = obtenerDimensiones(matriz1);
-  // const dims2 = obtenerDimensiones(matriz2);
-  // if (dims1.filas !== dims2.filas || dims1.columnas !== dims2.columnas) {
-  //   throw new Error('Las imágenes deben tener el mismo tamaño');
-  // }
-  
-  // 2. Para cada pixel:
-  // r = r1 * (1 - factor) + r2 * factor
-  // g = g1 * (1 - factor) + g2 * factor
-  // b = b1 * (1 - factor) + b2 * factor
-  
-  return []; // REEMPLAZAR
+// 1. Validación básica de dimensiones (Filas y Columnas)
+  // Si las matrices no coinciden, no podemos mezclarlas pixel a pixel.
+  if (matriz1.length !== matriz2.length || matriz1[0].length !== matriz2[0].length) {
+     throw new Error('Error: Las imágenes deben tener las mismas dimensiones (ancho y alto).');
+  }
+
+  // Optimizamos calculando el factor inverso una sola vez fuera del bucle
+  const f1 = 1 - factor;
+  const f2 = factor;
+
+  // Recorremos la matriz1 y usamos los índices (i, j) para buscar el par en matriz2
+  return matriz1.map((fila, i) => {
+    return fila.map((p1, j) => {
+      const p2 = matriz2[i][j]; // Pixel correspondiente en la imagen 2
+
+      // 2. Aplicamos la Combinación Lineal para cada canal RGB
+      // Usamos Math.floor para asegurar que el resultado sea un entero
+      return {
+        r: Math.floor(p1.r * f1 + p2.r * f2),
+        g: Math.floor(p1.g * f1 + p2.g * f2),
+        b: Math.floor(p1.b * f1 + p2.b * f2),
+        // Mantenemos el canal alpha del primer pixel (o podrías mezclarlo también)
+        ...(p1.a !== undefined && { a: p1.a })
+      };
+    });
+  });
 }
+
 
 /**
  * Ejercicio 4.2: Filtro Sepia (9 puntos)
