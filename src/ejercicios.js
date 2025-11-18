@@ -542,9 +542,32 @@ function mezclarImagenes(matriz1, matriz2, factor) {
  */
 function aplicarSepia(matriz) {
   // TODO: Implementar filtro sepia
-  
-  return []; // REEMPLAZAR
+return matriz.map(fila => {
+    return fila.map(pixel => {
+      const { r, g, b } = pixel;
+
+      // 1. Aplicamos la transformación matricial.
+      // Nota cómo el Rojo y Verde tienen pesos altos en todas las salidas,
+      // lo que empuja el color hacia el amarillo/naranja.
+      const nuevoR = 0.393 * r + 0.769 * g + 0.189 * b;
+      const nuevoG = 0.349 * r + 0.686 * g + 0.168 * b;
+      const nuevoB = 0.272 * r + 0.534 * g + 0.131 * b;
+
+      // 2. "Clamping" (Saturación)
+      // Es vital usar Math.min(255, ...) porque si tienes un pixel blanco (255,255,255),
+      // la fórmula del rojo da aprox 344. Sin el min, romperíamos el formato de 8 bits.
+      return {
+        r: Math.min(255, Math.floor(nuevoR)),
+        g: Math.min(255, Math.floor(nuevoG)),
+        b: Math.min(255, Math.floor(nuevoB)),
+        // Preservamos Alpha
+        ...(pixel.a !== undefined && { a: pixel.a })
+      };
+    });
+  });
 }
+
+
 
 /**
  * Ejercicio 4.3: Detectar bordes (simplificado) (8 puntos)
