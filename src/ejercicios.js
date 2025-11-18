@@ -393,11 +393,16 @@ function convertirEscalaGrises(matriz) {
 function voltearHorizontal(matriz) {
   // TODO: Implementar volteo horizontal
   
-  // Pista: Puedes usar .reverse() en cada fila
-  // o construir manualmente invirtiendo el orden
-  
-  return []; // REEMPLAZAR
+// Recorremos cada fila de la matriz
+  return matriz.map(fila => {
+    // 1. Creamos una COPIA de la fila usando el spread operator [...fila].
+    // 2. Aplicamos .reverse() sobre la copia.
+    // Si no copiáramos, estaríamos volteando la matriz original por referencia.
+    return [...fila].reverse();
+  });
 }
+
+
 
 /**
  * Ejercicio 3.2: Voltear vertical (10 puntos)
