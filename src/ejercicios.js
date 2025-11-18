@@ -310,10 +310,26 @@ function ajustarBrillo(matriz, factor) {
  * // Rojo (255,0,0) → Cian (0,255,255)
  */
 function invertirColores(matriz) {
-  // TODO: Implementar inversión de colores
-  
-  return []; // REEMPLAZAR
+  // Iteramos sobre cada FILA de la matriz
+  return matriz.map(fila => {
+    
+    // Iteramos sobre cada PIXEL de la fila
+    return fila.map(pixel => {
+      
+      // Retornamos un NUEVO objeto pixel con los valores invertidos.
+      // Es importante crear un objeto nuevo para respetar la inmutabilidad.
+      return {
+        r: 255 - pixel.r,
+        g: 255 - pixel.g,
+        b: 255 - pixel.b,
+        // Si el pixel tiene canal Alpha (transparencia), generalmente se deja igual.
+        // Copiamos cualquier otra propiedad que tenga el pixel original:
+        ...(pixel.a !== undefined && { a: pixel.a }) 
+      };
+    });
+  });
 }
+
 
 /**
  * Ejercicio 2.3: Convertir a escala de grises (9 puntos)
