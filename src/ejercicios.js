@@ -348,15 +348,27 @@ function invertirColores(matriz) {
 function convertirEscalaGrises(matriz) {
   // TODO: Implementar conversión a escala de grises
   
-  // Para cada pixel:
-  // 1. Calcular el valor de gris
-  // const gris = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
-  // 
-  // 2. Asignar ese valor a los tres canales
-  // pixelNuevo = {r: gris, g: gris, b: gris, a: pixel.a}
-  
-  return []; // REEMPLAZAR
+ return matriz.map(fila => {
+    return fila.map(pixel => {
+      
+      // 1. Calcular el valor de gris usando los pesos de luminancia (Luma).
+      // La fórmula devuelve un float, así que usamos Math.floor para tener un entero (0-255).
+      const luma = 0.299 * pixel.r + 0.587 * pixel.g + 0.114 * pixel.b;
+      const valorGris = Math.floor(luma);
+      
+      // 2. Asignar ese valor a los tres canales RGB.
+      // Cuando R = G = B, el resultado siempre es un tono de gris.
+      return {
+        r: valorGris,
+        g: valorGris,
+        b: valorGris,
+        // Preservamos la transparencia si existe
+        ...(pixel.a !== undefined && { a: pixel.a })
+      };
+    });
+  });
 }
+
 
 // ============================================
 // SECCIÓN 3: TRANSFORMACIONES GEOMÉTRICAS (30 puntos)
