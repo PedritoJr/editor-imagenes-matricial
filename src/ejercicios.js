@@ -205,11 +205,42 @@ function obtenerCanal(matriz, canal) {
  * // {ancho: 100, alto: 100, totalPixeles: 10000}
  */
 function obtenerDimensionesImagen(rutaImagen) {
-  // TODO: Obtener dimensiones sin cargar toda la imagen en memoria
-  
-  // Pista: Puedes cargar la imagen y usar obtenerDimensiones()
-  // o leer solo el header del PNG
-  
+    // TODO: Obtener dimensiones sin cargar toda la imagen en memoria
+  try {
+    // 1. Abrimos el archivo en modo lectura ('r').
+    // Usamos openSync para simplicidad, pero en producción idealmente sería asíncrono.
+    const fd = fs.openSync(rutaImagen, 'r');
+
+    // 2. Preparamos un buffer. 
+    // Solo necesitamos leer los primeros 24 bytes para llegar a la altura.
+    const buffer = Buffer.alloc(24);
+
+    // 3. Leemos del disco SOLO esos 24 bytes.
+    // fs.readSync(descriptor, buffer, offset_buffer, longitud, posicion_archivo)
+    fs.readSync(fd, buffer, 0, 24, 0);
+
+    // 4. Cerramos el archivo inmediatamente para liberar el recurso.
+    fs.closeSync(fd);
+
+    // 5. Extraemos la información.
+    // PNG almacena los datos en 'Big Endian' (el byte más significativo primero).
+    // El ancho está en la posición 16 y el alto en la 20.
+    const ancho = buffer.readUInt32BE(16);
+    const alto = buffer.readUInt32BE(20);
+
+    return { 
+      ancho: ancho, 
+      alto: alto, 
+      totalPixeles: ancho * alto 
+    };
+
+  } catch (error) {
+    console.error("Error al leer la imagen:", error.message);
+    return { ancho: 0, alto: 0, totalPixeles: 0 };
+  }
+
+
+
   return { ancho: 0, alto: 0, totalPixeles: 0 }; // REEMPLAZAR
 }
 
