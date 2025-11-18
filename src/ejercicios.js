@@ -114,39 +114,41 @@ function matrizAImagen(matriz, rutaSalida) {
   // TODO: Implementar la conversión de matriz a PNG
   
   // 1. Validar la matriz
-  // validarMatriz(matriz);
+   validarMatriz(matriz);
   
   // 2. Obtener dimensiones
-  // const dims = obtenerDimensiones(matriz);
+   const dims = obtenerDimensiones(matriz);
   
   // 3. Crear el PNG
-  // const png = new PNG({
-  //   width: dims.columnas,
-  //   height: dims.filas
-  // });
+   const png = new PNG({
+     width: dims.columnas,
+     height: dims.filas
+   });
   
   // 4. Llenar png.data
-  // for (let y = 0; y < dims.filas; y++) {
-  //   for (let x = 0; x < dims.columnas; x++) {
-  //     const idx = (dims.columnas * y + x) << 2;
-  //     const pixel = matriz[y][x];
-  //     
-  //     png.data[idx] = limitarValorColor(pixel.r);
-  //     png.data[idx + 1] = limitarValorColor(pixel.g);
-  //     png.data[idx + 2] = limitarValorColor(pixel.b);
-  //     png.data[idx + 3] = limitarValorColor(pixel.a);
-  //   }
-  // }
+   for (let y = 0; y < dims.filas; y++) {
+     for (let x = 0; x < dims.columnas; x++) {
+       const idx = (dims.columnas * y + x) << 2;
+       const pixel = matriz[y][x];
+       
+       png.data[idx] = limitarValorColor(pixel.r);
+       png.data[idx + 1] = limitarValorColor(pixel.g);
+       png.data[idx + 2] = limitarValorColor(pixel.b);
+       png.data[idx + 3] = limitarValorColor(pixel.a);
+     }
+   }
   
   // 5. Asegurar que existe el directorio de salida
-  // asegurarDirectorio(path.dirname(rutaSalida));
+   asegurarDirectorio(path.dirname(rutaSalida));
   
   // 6. Guardar el archivo
-  // const buffer = PNG.sync.write(png);
-  // fs.writeFileSync(rutaSalida, buffer);
+   const buffer = PNG.sync.write(png);
+   fs.writeFileSync(rutaSalida, buffer);
   
   // ESCRIBE TU CÓDIGO AQUÍ
 }
+
+
 
 /**
  * Ejercicio 1.3: Obtener un canal específico de color (5 puntos)
