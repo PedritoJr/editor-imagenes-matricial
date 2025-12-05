@@ -8,7 +8,7 @@ coverage/
 
 # Resultados generados (no versionar las imágenes procesadas)
 imagenes/salida/*.png
-imagenes/salida/*.jpg
+
 imagenes/salida/*.bmp
 !imagenes/salida/.gitkeep
 

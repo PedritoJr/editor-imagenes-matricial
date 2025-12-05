@@ -1,0 +1,133 @@
+:root {
+    --primary: #2563eb;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --border: #e2e8f0;
+    --drag-bg: #e0f2fe; /* Color cuando arrastras algo encima */
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+header h1 { color: var(--primary); margin: 0; }
+.status { margin-top: 1rem; font-size: 0.9rem; color: #64748b; }
+
+h2 { color: #334155; margin-bottom: 1rem; font-size: 1.25rem; }
+
+/* --- NUEVOS ESTILOS PARA DRAG & DROP --- */
+
+.contenedor-arrastre {
+    min-height: 150px;
+    transition: background-color 0.3s, border-color 0.3s;
+    border-radius: 12px;
+}
+
+/* Estilo específico para la zona de selección */
+#zona-seleccion {
+    background-color: #f1f5f9;
+    border: 3px dashed #cbd5e1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+    align-items: flex-start; /* Para que las tarjetas no se estiren */
+}
+
+#zona-seleccion.drag-over {
+    background-color: var(--drag-bg);
+    border-color: var(--primary);
+}
+
+.mensaje-vacio {
+    width: 100%;
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    pointer-events: none; /* Para que no interfiera con el drop */
+}
+
+/* La galería original también es un contenedor */
+.grid-galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* --- TARJETAS --- */
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    /* Importante para el arrastre */
+    cursor: grab; 
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.card:active {
+    cursor: grabbing;
+}
+
+/* Clase que se aplica automáticamente al elemento que estás moviendo */
+.card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2);
+}
+
+/* Resto de estilos de tarjeta igual que antes */
+.card-image-container {
+    height: 200px; /* Reduje un poco la altura para que sea más manejable */
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), 
+                      linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+                      linear-gradient(45deg, transparent 75%, #ccc 75%), 
+                      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    pointer-events: none; /* Evita arrastrar la imagen fantasma por defecto del navegador */
+}
+
+.card-info { padding: 1rem; background: white; border-top: 1px solid var(--border); }
+.card-title { font-size: 1rem; font-weight: 600; margin: 0 0 0.5rem 0; }
+.badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: bold; background-color: #e2e8f0; color: #475569; }
+.badge.found { background-color: #dcfce7; color: #166534; }
+.badge.missing { background-color: #fee2e2; color: #991b1b; }
+footer { text-align: center; padding: 2rem; color: #64748b; border-top: 1px solid var(--border); }
