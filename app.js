@@ -116,6 +116,10 @@ function actualizarEstado(card, exito) {
     }
 }
 
+function actualizarContador() {
+    contador.textContent = `${encontradas} de ${imagenesEsperadas.length} imágenes generadas`;
+}
+
 
 
 // --- CONFIGURACIÓN DE LAS ZONAS DE ARRASTRE ---
